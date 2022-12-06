@@ -1,57 +1,61 @@
-import Image from 'next/image'
-import styles from './page.module.css'
+"use client"
+import { Fragment } from 'react'
+import { Menu, Transition } from '@headlessui/react'
+
+import { EllipsisVerticalIcon } from '@heroicons/react/24/solid'
+
+function classNames(...classes) {
+  return classes.filter(Boolean).join(' ')
+}
 
 export default function Home() {
-  return (
-    <div className={styles.container}>
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js 13!</a>
-        </h1>
-
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>app/page.tsx</code>
-        </p>
-
-        <div className={styles.grid}>
-          <a href="https://beta.nextjs.org/docs" className={styles.card}>
-            <h2>Documentation &rarr;</h2>
-            <p>Find in-depth information about Next.js 13</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/canary/examples"
-            className={styles.card}
-          >
-            <h2>Examples &rarr;</h2>
-            <p>Explore the Next.js 13 playground.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/templates/next.js/app-directory?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.card}
-          >
-            <h2>Deploy &rarr;</h2>
-            <p>Deploy your Next.js site to a public URL with Vercel.</p>
-          </a>
-        </div>
-      </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <span className={styles.logo}>
-            <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-          </span>
-        </a>
-      </footer>
-    </div>
-  )
+	return (
+		<div className="h-screen flex justify-center items-center bg-gradient-to-r from-teal-500 to-emerald-300 p-4 sm:p-2">
+			<div className="rounded-md w-full h-3/4 sm:w-3/4 md:w-1/2 sm:h-1/2 p-3 bg-white">
+				<div className="flex justify-between">
+					<input type="text" placeholder="Items" className="p-2 w-full text-slate-600 rounded-md border-solid border-2 border-slate-200 outline-none focus:border-teal-400"/>
+					<button className="px-7 py-2 ml-2 bg-teal-500 rounded-md text-base text-white">Add</button>
+				</div>
+				<div className="flex mt-5">
+					<div className="flex justify-between bg-teal-100 rounded-md p-2 w-full items-center">
+						<p className="text-teal-700">Test test test test test test</p>
+						<Menu as="div" className="relative inline-block text-left">
+				        	<Menu.Button className="bg-teal-400 rounded-full p-2">
+				          		<EllipsisVerticalIcon className="w-6 h-6 text-white"/>
+				        	</Menu.Button>
+				        	<Transition
+						        enter="transition duration-100 ease-out"
+						        enterFrom="transform scale-95 opacity-0"
+						        enterTo="transform scale-100 opacity-100"
+						        leave="transition duration-75 ease-out"
+						        leaveFrom="transform scale-100 opacity-100"
+						        leaveTo="transform scale-95 opacity-0"
+						    >
+					        	<Menu.Items className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+					          		<div className="py-1 flex flex-col">
+					            		<Menu.Item>
+							                <button
+							                  onClick={() => {}}
+							                  className='inline-block hover:bg-teal-100 text-left p-2'
+							                >
+							                  Edit
+							                </button>
+					            		</Menu.Item>
+					            		<Menu.Item>
+							                <button
+							                  onClick={() => {}}
+							                  className='inline-block hover:bg-teal-100 text-left p-2'
+							                >
+							                  Delete
+							                </button>
+					            		</Menu.Item>
+					          		</div>
+					        	</Menu.Items>
+						    </Transition>
+					    </Menu>
+					</div>
+				</div>
+			</div>
+		</div>
+	)
 }
