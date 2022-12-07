@@ -1,20 +1,18 @@
 "use client"
-import { Fragment } from 'react'
+import { useState } from 'react'
 import { Menu, Transition } from '@headlessui/react'
 
 import { EllipsisVerticalIcon } from '@heroicons/react/24/solid'
 
-function classNames(...classes) {
-  return classes.filter(Boolean).join(' ')
-}
-
 export default function Home() {
+	const [item, setItem] = useState('')
+
 	return (
 		<div className="h-screen flex justify-center items-center bg-gradient-to-r from-teal-500 to-emerald-300 p-4 sm:p-2">
 			<div className="rounded-md w-full h-3/4 sm:w-3/4 md:w-1/2 sm:h-1/2 p-3 bg-white">
 				<div className="flex justify-between">
-					<input type="text" placeholder="Items" className="p-2 w-full text-slate-600 rounded-md border-solid border-2 border-slate-200 outline-none focus:border-teal-400"/>
-					<button className="px-7 py-2 ml-2 bg-teal-500 rounded-md text-base text-white">Add</button>
+					<input type="text" placeholder="Items" onChange={(e) => setItem(e.target.value)} value={item} className="p-2 w-full text-slate-600 rounded-md border-solid border-2 border-slate-200 outline-none focus:border-teal-400"/>
+					<button className="px-7 py-2 ml-2 bg-teal-500 rounded-md text-base text-white shadow-md" onClick={() => {}}>Add</button>
 				</div>
 				<div className="flex mt-5">
 					<div className="flex justify-between bg-teal-100 rounded-md p-2 w-full items-center">
