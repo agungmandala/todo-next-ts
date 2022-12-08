@@ -1,12 +1,5 @@
-import prisma from 'lib/prisma'
+import prisma from '../../lib/prisma'
 import type { NextApiRequest, NextApiResponse } from 'next'
-
-export default function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
-  res.status(200).json({ name: 'John Doe' })
-}
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { query, body, method } = req
@@ -18,7 +11,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
         const create = await prisma.items.create({
           data: {
-            item
+            item: item.item
           },
         })
 
@@ -33,34 +26,22 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     case "GET":
       const items = await prisma.items.findMany()
 
-      res.status(200).json(kelas)
+      res.status(200).json(items)
       break
     case "PUT":
-      const checkUpdate = await prisma.kelas.findFirst({
+      const update = await prisma.items.update({
         where: {
-          nama_kelas: body.kelas.nama_kelas,
-        },
-      })
-
-      if (checkUpdate && checkUpdate.id !== body.kelas.id) return res.status(200).json({ error: true, message: "Nama kelas sudah ada!" })
-
-      const updateKelas = await prisma.kelas.update({
-        where: {
-          id: body.kelas.id,
+          id: body.item.id,
         },
         data: {
-          ruangan_id: body.kelas.ruangan_id,
-          nama_kelas: body.kelas.nama_kelas,
-          keterangan: body.kelas.keterangan,
-          status_aktif: body.kelas.status_aktif,
-          updated_at: DateTime.local().plus({ hours: 7 }).toString(),
+          item: body.item.item
         },
       })
 
       res.status(200).json({ ok: true })
       break
     case "DELETE":
-      const deleteKelas = await prisma.kelas.delete({
+      const deleteItem = await prisma.items.delete({
         where: {
           id: query.id,
         },
