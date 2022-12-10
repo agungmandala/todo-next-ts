@@ -25,7 +25,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       break
     case "GET":
       const items = await prisma.items.findMany()
-
+      
       res.status(200).json(items)
       break
     case "PUT":

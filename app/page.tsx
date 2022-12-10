@@ -1,35 +1,31 @@
 "use client"
 import axios from 'axios'
+import useSWR from 'swr'
 import { useState, useEffect } from 'react'
 import { Menu, Transition } from '@headlessui/react'
 
 import { EllipsisVerticalIcon } from '@heroicons/react/24/solid'
 
+const fetcher = url => axios.get(url).then(res => res.data)
+
 export default function Home() {
-	const [error, setError] = useState(false)
+	const [errorForm, setErrorForm] = useState(false)
 	const [item, setItem] = useState({
 		id: '',
 		item: ''
 	})
-	const [itemsData, setItemsData] = useState()
 
-	const getItems = async () => {
-		await axios.get('/api/items').then((res) => {
-			const { data } = res
-			setItemsData(data)
-		})
-	}
-
-	useEffect(() => {
-		getItems()
-	},[])
+	const { data, error, isLoading, mutate } = useSWR('/api/items', fetcher, {
+	  revalidateOnFocus: false,
+	  revalidateOnReconnect: false
+	})
 
 	const reset = () => {
 		setItem({
 			id: '',
 			item: ''
 		})
-		setError(false)
+		setErrorForm(false)
 	}
 
 	const postItem = () => {
@@ -37,16 +33,16 @@ export default function Home() {
 
 		axios.post('/api/items', {item}).then(() => {
 			reset()
-			getItems()
+			mutate()
 		})
 	}
 
 	const updateItem = () => {
-		if (item.item === '') return setError(true)
+		if (item.item === '') return setErrorForm(true)
 
 		axios.put('/api/items', {item}).then(() => {
 			reset()
-			getItems()
+			mutate()
 		})
 	}
 
@@ -56,7 +52,7 @@ export default function Home() {
 				id
 			}
 		}).then(() => {
-			getItems()
+			mutate()
 		})
 	}
 
@@ -69,7 +65,7 @@ export default function Home() {
 						placeholder="Items"
 						onChange={(e) => setItem({...item, item:e.target.value})}
 						value={item.item}
-						className={`p-2 w-full text-slate-600 rounded-md outline-none ${error ? "border-solid border-2 border-red-400 focus:border-red-400" : "border-solid border-2 border-slate-200 focus:border-teal-400"}`}
+						className={`p-2 w-full text-slate-600 rounded-md outline-none ${errorForm ? "border-solid border-2 border-red-400 focus:border-red-400" : "border-solid border-2 border-slate-200 focus:border-teal-400"}`}
 					/>
 					{
 						item.id ?
@@ -89,14 +85,14 @@ export default function Home() {
 				</div>
 				<div className="flex flex-col">
 					{
-						!itemsData && <div className="w-full"><p className="text-lg text-center">Loading</p></div>
+						isLoading && <div className="w-full"><p className="text-lg text-center">Loading</p></div>
 					}
 					{
-						itemsData?.length === 0 && <div className="w-full"><p className="text-lg text-center">Data empty</p></div>
+						data?.length === 0 && <div className="w-full"><p className="text-lg text-center">Data empty</p></div>
 					}
 					{
-						itemsData?.length > 0 &&
-						itemsData.map((data) => {
+						data?.length > 0 &&
+						data.map((data) => {
 							return (
 								<div className="flex justify-between bg-teal-100 rounded-md p-2 w-full items-center mb-2">
 									<p className="text-teal-700">{data.item}</p>
