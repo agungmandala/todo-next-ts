@@ -1,4 +1,5 @@
 import prisma from '../../lib/prisma'
+import logger from '../../lib/winston'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -15,8 +16,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           },
         })
 
+        logger.info('User add item')
+
         return res.status(200).json({ ok: true })
       } catch (err) {
+        logger.error('Server error')
         res.status(500).json({
           status: 'SERVER_ERROR',
           message: 'Server error'
@@ -25,6 +29,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       break
     case "GET":
       const items = await prisma.items.findMany()
+      
+      logger.info('User get items')
 
       res.status(200).json(items)
       break
@@ -38,6 +44,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         },
       })
 
+      logger.info(`User update items, id: ${body.item.id}`)
+
       res.status(200).json({ ok: true })
       break
     case "DELETE":
@@ -46,6 +54,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           id: query.id,
         },
       })
+
+      logger.info(`User delete items, id: ${query.id}`)
 
       res.status(200).json({ ok: true })
       break
