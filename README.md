@@ -4,10 +4,10 @@
 
 ## Features
 
--Typescript
--TailwindCSS
--Prisma
--Winston logger
+- Typescript
+- TailwindCSS
+- Prisma
+- Winston logger
 
 ### Instalation
 
