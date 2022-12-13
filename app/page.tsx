@@ -6,7 +6,7 @@ import { Menu, Transition } from '@headlessui/react'
 
 import { EllipsisVerticalIcon } from '@heroicons/react/24/solid'
 
-const fetcher = url => axios.get(url).then(res => res.data)
+const fetcher = (url: string) => axios.get(url).then(res => res.data)
 
 export default function Home() {
 	const [errorForm, setErrorForm] = useState(false)
@@ -29,7 +29,7 @@ export default function Home() {
 	}
 
 	const postItem = () => {
-		if (item.item === '') return setError(true)
+		if (item.item === '') return setErrorForm(true)
 
 		axios.post('/api/items', {item}).then(() => {
 			reset()
@@ -92,7 +92,7 @@ export default function Home() {
 					}
 					{
 						data?.length > 0 &&
-						data.map((data) => {
+						data.map((data: any) => {
 							return (
 								<div className="flex justify-between bg-teal-100 rounded-md p-2 w-full items-center mb-2">
 									<p className="text-teal-700">{data.item}</p>

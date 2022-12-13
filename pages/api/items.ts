@@ -1,4 +1,4 @@
-import prisma from '../../lib/prisma'
+import { prisma } from '../../lib/prisma'
 import logger from '../../lib/winston'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
@@ -51,7 +51,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     case "DELETE":
       const deleteItem = await prisma.items.delete({
         where: {
-          id: query.id,
+          id: String(query.id)
         },
       })
 
